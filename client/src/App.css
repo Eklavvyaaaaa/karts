@@ -69,3 +69,77 @@ kbd { display: grid; width: 20px; height: 20px; place-items: center; color: #172
   .debug-panel { right: 18px; bottom: 16px; width: 162px; }
   .corner-label { display: none; }
 }
+
+.position-readout { display: flex; flex-direction: column; gap: 3px; margin-top: 5px; text-align: right; }
+.position-readout small, .race-telemetry > span, .race-start-panel .eyebrow, .results-screen .eyebrow { color: #d5dfd6; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .13em; }
+.position-readout strong { color: #f2c84b; font-size: 22px; letter-spacing: .08em; }
+
+.race-start-panel, .results-screen {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  width: min(430px, calc(100% - 36px));
+  padding: 30px 34px;
+  transform: translate(-50%, -50%);
+  color: #f8f3e7;
+  background: rgba(23, 35, 40, .82);
+  border-top: 3px solid #f2c84b;
+  box-shadow: 0 20px 60px rgba(10, 18, 21, .35);
+  backdrop-filter: blur(12px);
+  text-align: center;
+}
+.race-start-panel h1, .results-screen h1 { margin: 12px 0 7px; font-size: 42px; letter-spacing: .06em; line-height: .95; }
+.race-start-panel p { margin: 0 0 24px; color: #b8c8be; font-family: 'Space Mono', monospace; font-size: 10px; }
+.race-action { padding: 11px 19px; border: 1px solid #f2c84b; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .1em; }
+.primary-action { color: #172328; background: #f2c84b; }
+.secondary-action { color: #f8f3e7; background: transparent; border-color: rgba(248,243,231,.35); }
+.race-action:hover { color: #172328; background: #ffffff; border-color: #ffffff; }
+
+.race-countdown, .go-flash, .finish-banner {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+.race-countdown span { color: #f2c84b; font-size: 128px; font-weight: 700; line-height: .8; text-shadow: 0 8px 24px rgba(10,18,21,.35); animation: count-pop .5s ease both; }
+.race-countdown small, .finish-banner small { margin-top: 18px; color: #f8f3e7; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .18em; }
+.go-flash { color: #77c18e; font-size: 74px; font-weight: 700; letter-spacing: .06em; animation: count-pop .7s ease both; }
+.finish-banner span { color: #f2c84b; font-size: 70px; font-weight: 700; letter-spacing: .05em; }
+@keyframes count-pop { from { opacity: 0; transform: scale(.72); } to { opacity: 1; transform: scale(1); } }
+
+.race-telemetry { position: absolute; z-index: 2; right: 34px; bottom: 28px; display: grid; grid-template-columns: auto auto auto auto; align-items: end; gap: 8px 12px; padding: 10px 13px; color: #d5dfd6; background: rgba(23,35,40,.7); font-family: 'Space Mono', monospace; font-size: 9px; }
+.race-telemetry strong { grid-column: 1 / -1; color: #f8f3e7; font-family: 'Barlow Condensed', sans-serif; font-size: 34px; line-height: .8; text-align: right; }
+.race-telemetry strong small { color: #f2c84b; font-family: 'Space Mono', monospace; font-size: 8px; }
+.telemetry-active { color: #f2c84b !important; }
+
+.results-screen { text-align: left; }
+.results-screen h1 { text-align: left; }
+.result-player { display: flex; align-items: center; gap: 10px; padding: 13px 0; border-top: 1px solid rgba(248,243,231,.16); border-bottom: 1px solid rgba(248,243,231,.16); }
+.result-player span { color: #f2c84b; font-family: 'Space Mono', monospace; font-size: 11px; }
+.result-player strong { flex: 1; font-size: 20px; letter-spacing: .06em; }
+.result-player b { font-size: 18px; }
+.result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 22px 0; }
+.result-stats div { display: flex; flex-direction: column; gap: 6px; }
+.result-stats small { color: #b8c8be; font-family: 'Space Mono', monospace; font-size: 8px; }
+.result-stats strong { color: #f8f3e7; font-family: 'Space Mono', monospace; font-size: 12px; }
+.result-actions { display: flex; gap: 9px; }
+
+@media (max-width: 640px) {
+  .game-hud { flex-wrap: wrap; gap: 12px; }
+  .session-chip { order: 3; }
+  .lap-readout, .position-readout { margin-top: 2px; }
+  .position-readout strong, .lap-readout strong { font-size: 17px; }
+  .race-telemetry { right: 18px; bottom: 16px; }
+  .race-start-panel, .results-screen { padding: 24px; }
+  .race-start-panel h1, .results-screen h1 { font-size: 34px; }
+  .result-stats { gap: 7px; }
+  .result-stats strong { font-size: 10px; }
+  .result-actions { flex-direction: column; }
+}

@@ -1,7 +1,7 @@
 import { useFrame, useThree } from '@react-three/fiber'
 import { useRef } from 'react'
 import * as THREE from 'three'
-import type { Object3D, PerspectiveCamera } from 'three'
+import type { PerspectiveCamera } from 'three'
 import type { RapierRigidBody } from '@react-three/rapier'
 import type { KartController } from '../kart/KartController'
 
@@ -12,11 +12,9 @@ const BASE_FOV = 52
 const MAX_FOV_BOOST = 7
 
 export function ThirdPersonCamera({
-  target,
   bodyRef,
   controller,
 }: {
-  target: React.RefObject<Object3D | null>
   bodyRef: React.RefObject<RapierRigidBody | null>
   controller: KartController
 }) {
@@ -25,18 +23,25 @@ export function ThirdPersonCamera({
   const focus = useRef(new THREE.Vector3())
   const lookAt = useRef(new THREE.Vector3())
   const velocity = useRef(new THREE.Vector3())
+  const forward = useRef(new THREE.Vector3(0, 0, -1))
+  const rotation = useRef(new THREE.Quaternion())
   const elapsed = useRef(0)
 
   useFrame((_, delta) => {
     const body = bodyRef.current
-    if (!target.current || !body) return
+    if (!body) return
     elapsed.current += delta
-    target.current.getWorldPosition(focus.current)
+    const bodyPosition = body.translation()
+    const bodyRotation = body.rotation()
+    focus.current.set(bodyPosition.x, bodyPosition.y, bodyPosition.z)
+    rotation.current.set(bodyRotation.x, bodyRotation.y, bodyRotation.z, bodyRotation.w)
+    forward.current.set(0, 0, -1).applyQuaternion(rotation.current).normalize()
     const bodyVelocity = body.linvel()
     velocity.current.set(bodyVelocity.x, 0, bodyVelocity.z)
     const speed = velocity.current.length()
     const speedRatio = Math.min(speed / 25, 1)
-    desired.current.set(focus.current.x, focus.current.y + CAMERA_HEIGHT, focus.current.z + CAMERA_DISTANCE)
+    desired.current.copy(focus.current).addScaledVector(forward.current, -CAMERA_DISTANCE)
+    desired.current.y += CAMERA_HEIGHT
     desired.current.addScaledVector(velocity.current, -0.1)
     const shake = controller.getState().cameraShake
     desired.current.x += Math.sin(elapsed.current * 48) * shake * 0.12
