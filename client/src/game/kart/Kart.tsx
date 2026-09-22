@@ -8,15 +8,20 @@ import { useGameStore } from '../../state/gameStore'
 import { EMPTY_INPUT } from '../input/InputState'
 import { KartController } from './KartController'
 import { KartVisuals } from './KartVisuals'
+import type { PhoneInput } from '../input/PhoneInput'
 
 export function Kart({
   bodyRef,
   controller,
   spawnPosition,
+  phoneInput,
+  keyboardEnabled,
 }: {
   bodyRef: RefObject<RapierRigidBody | null>
   controller: KartController
   spawnPosition: [number, number, number]
+  phoneInput: PhoneInput
+  keyboardEnabled: boolean
 }) {
   const inputManager = useInputManager()
   const raceState = useGameStore((state) => state.race.state)
@@ -26,7 +31,8 @@ export function Kart({
     const body = bodyRef.current
     if (!body) return
     elapsed.current += delta
-    controller.update(body, raceState === 'RACING' ? inputManager.read() : EMPTY_INPUT, delta, elapsed.current)
+    const input = phoneInput.isActive() ? phoneInput.read() : keyboardEnabled ? inputManager.read() : EMPTY_INPUT
+    controller.update(body, raceState === 'RACING' ? input : EMPTY_INPUT, delta, elapsed.current)
   })
 
   return (

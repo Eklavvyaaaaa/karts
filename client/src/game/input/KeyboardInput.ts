@@ -1,6 +1,8 @@
 import type { InputState } from './InputState'
 
-const KEY_BINDINGS: Record<string, keyof InputState> = {
+type ButtonInput = Exclude<keyof InputState, 'steering'>
+
+const KEY_BINDINGS: Record<string, ButtonInput> = {
   KeyW: 'accelerate',
   ArrowUp: 'accelerate',
   KeyS: 'brake',
@@ -22,6 +24,8 @@ export class KeyboardInput {
     right: false,
     drift: false,
     boost: false,
+    item: false,
+    steering: 0,
   }
 
   private readonly onKeyDown = (event: KeyboardEvent) => {
@@ -52,6 +56,6 @@ export class KeyboardInput {
   }
 
   read(): InputState {
-    return this.state
+    return { ...this.state, steering: Number(this.state.right) - Number(this.state.left) }
   }
 }

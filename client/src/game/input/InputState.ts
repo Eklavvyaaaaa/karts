@@ -5,6 +5,8 @@ export type InputState = {
   right: boolean
   drift: boolean
   boost: boolean
+  item: boolean
+  steering: number
 }
 
 export const EMPTY_INPUT: InputState = {
@@ -14,4 +16,6 @@ export const EMPTY_INPUT: InputState = {
   right: false,
   drift: false,
   boost: false,
+  item: false,
+  steering: 0,
 }

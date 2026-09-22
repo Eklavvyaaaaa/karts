@@ -10,11 +10,31 @@ export function Track({ config, onCheckpoint, onFinish }: { config: TrackConfig;
     <group>
       <TrackCollision />
       <TrackVisuals />
+      <ItemSpawnMarkers config={config} />
       <StartGrid positions={config.startGrid} />
       {config.checkpoints.map((checkpoint) => (
         <Checkpoint key={checkpoint.id} definition={checkpoint} onPlayerEnter={() => onCheckpoint(checkpoint.order)} />
       ))}
       <FinishLine definition={config.finishLine} onPlayerEnter={onFinish} />
+    </group>
+  )
+}
+
+function ItemSpawnMarkers({ config }: { config: TrackConfig }) {
+  return (
+    <group>
+      {config.itemSpawnPoints.map((point) => (
+        <group key={point.id} position={point.position} rotation={[0, point.rotation, 0]}>
+          <mesh position={[0, 0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[1.4, 1.4]} />
+            <meshStandardMaterial color="#77c18e" emissive="#2e6f57" emissiveIntensity={0.5} transparent opacity={0.8} />
+          </mesh>
+          <mesh position={[0, 0.8, 0]}>
+            <boxGeometry args={[0.65, 0.65, 0.65]} />
+            <meshStandardMaterial color="#f2c84b" emissive="#a77d18" emissiveIntensity={0.8} metalness={0.1} />
+          </mesh>
+        </group>
+      ))}
     </group>
   )
 }

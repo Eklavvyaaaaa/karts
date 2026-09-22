@@ -1,0 +1,11 @@
+{
+  "name": "kart-racing-server-foundation",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node server.mjs", "dev": "node --watch server.mjs" },
+  "dependencies": {
+    "express": "^5.2.1",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.3"
+  }
+}

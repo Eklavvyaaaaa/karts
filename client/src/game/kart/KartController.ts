@@ -43,7 +43,7 @@ export class KartController {
     const translation = body.translation()
     const velocity = body.linvel()
     const grounded = translation.y <= this.config.groundHeight + 0.14 && velocity.y <= 1.4
-    const steer = Number(input.right) - Number(input.left)
+    const steer = Math.max(-1, Math.min(1, Number.isFinite(input.steering) ? input.steering : Number(input.right) - Number(input.left)))
     const horizontalSpeed = Math.hypot(velocity.x, velocity.z)
     const drifting = grounded && input.drift && Math.abs(steer) > 0 && horizontalSpeed > 4
 
