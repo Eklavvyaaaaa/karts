@@ -110,4 +110,17 @@ export class KartController {
   getState() {
     return this.state
   }
+
+  respawn(body: RapierRigidBody, position: [number, number, number], rotation = 0) {
+    body.setTranslation({ x: position[0], y: position[1], z: position[2] }, true)
+    body.setRotation({ x: 0, y: Math.sin(rotation / 2), z: 0, w: Math.cos(rotation / 2) }, true)
+    body.setLinvel({ x: 0, y: 0, z: 0 }, true)
+    body.setAngvel({ x: 0, y: 0, z: 0 }, true)
+    this.boostTime = 0
+    this.state.speed = 0
+    this.state.steering = 0
+    this.state.drifting = false
+    this.state.boosting = false
+    this.state.cameraShake = 0.12
+  }
 }
